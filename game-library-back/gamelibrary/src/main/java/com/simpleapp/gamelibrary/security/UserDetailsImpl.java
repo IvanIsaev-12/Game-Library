@@ -3,8 +3,6 @@ package com.simpleapp.gamelibrary.security;
 import com.simpleapp.gamelibrary.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import java.util.Collection;
 import java.util.List;
 

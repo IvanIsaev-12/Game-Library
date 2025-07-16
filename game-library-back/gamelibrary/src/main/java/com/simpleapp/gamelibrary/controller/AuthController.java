@@ -1,7 +1,7 @@
 package com.simpleapp.gamelibrary.controller;
 
+import com.simpleapp.gamelibrary.dto.AuthRequest;
 import com.simpleapp.gamelibrary.dto.RegisterRequest;
-import com.simpleapp.gamelibrary.entity.User;
 import com.simpleapp.gamelibrary.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +20,20 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            authService.register(request.getEmail(), request.getPassword(), request.getFirstName(), request.getLastName());
-            return ResponseEntity.ok("User registered successfully");
+            return ResponseEntity.ok(authService.register(request));
         }
         catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
+        try {
+            return ResponseEntity.ok(authService.authenticate(request));
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
