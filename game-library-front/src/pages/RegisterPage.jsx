@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { registerUser } from '../util/http';
 import {
 	Stack,
 	TextField,
@@ -7,13 +9,11 @@ import {
 	Button,
 	Typography,
 	Box,
-   Divider,
+	Divider,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-
 import CenteringBox from '../components/CenteringBox';
 
-//TODO add http actions
 export default function RegisterPage() {
 	const {
 		register,
@@ -22,8 +22,27 @@ export default function RegisterPage() {
 		formState: { errors },
 	} = useForm();
 
+	const mutation = useMutation({
+		mutationFn: registerUser,
+		onSuccess: () => {
+			alert('Registration successful! You can now log in.');
+		},
+		onError: (error) => {
+			alert('Registration failed: ' + error.message);
+		},
+	});
+
 	const onSubmit = (data) => {
-		console.log(data);
+		if (data.password !== data.confirmPassword) {
+			alert('Passwords do not match');
+			return;
+		}
+		mutation.mutate({
+			firstName: data.firstName,
+			lastName: data.lastName,
+			email: data.email,
+			password: data.password,
+		});
 	};
 
 	return (
@@ -38,8 +57,7 @@ export default function RegisterPage() {
 					spacing={2}
 				>
 					<h1>Register</h1>
-               <Divider/>
-
+					<Divider />
 					<TextField
 						label='First Name'
 						{...register('firstName', {
@@ -48,7 +66,6 @@ export default function RegisterPage() {
 						error={!!errors.firstName}
 						helperText={errors.firstName?.message}
 					/>
-
 					<TextField
 						label='Last Name'
 						{...register('lastName', {
@@ -57,7 +74,6 @@ export default function RegisterPage() {
 						error={!!errors.lastName}
 						helperText={errors.lastName?.message}
 					/>
-
 					<TextField
 						label='Email'
 						type='email'
@@ -69,7 +85,6 @@ export default function RegisterPage() {
 						error={!!errors.email}
 						helperText={errors.email?.message}
 					/>
-
 					<TextField
 						label='Password'
 						type='password'
@@ -79,7 +94,6 @@ export default function RegisterPage() {
 						error={!!errors.password}
 						helperText={errors.password?.message}
 					/>
-
 					<TextField
 						label='Confirm Password'
 						type='password'
@@ -93,7 +107,6 @@ export default function RegisterPage() {
 								'Passwords do not match')
 						}
 					/>
-
 					<FormControlLabel
 						control={
 							<Checkbox
@@ -110,13 +123,13 @@ export default function RegisterPage() {
 							You must accept the terms
 						</Typography>
 					)}
-
 					<Button
 						type='submit'
 						variant='contained'
 						color='primary'
+						disabled={mutation.isLoading}
 					>
-						Submit
+						{mutation.isLoading ? 'Registering...' : 'Submit'}
 					</Button>
 					<Box
 						display='flex'
