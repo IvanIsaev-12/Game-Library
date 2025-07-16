@@ -1,12 +1,16 @@
 import { Box, TextField, Button, Stack, Divider } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import {useAuth} from '../contexts/AuthContext';
 import CenteringBox from '../components/CenteringBox';
 
 
 
-//TODO add http actions
+//TODO: add http actions
 export default function LoginPage() {
+   const navigate = useNavigate();
+   const {setLoggedIn} = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -15,6 +19,10 @@ export default function LoginPage() {
 
 	function onSubmit(data) {
 		console.log(data);
+
+
+      setLoggedIn(true);
+      navigate('/');
 	}
 
 	return (

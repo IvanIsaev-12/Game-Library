@@ -1,9 +1,13 @@
 import './App.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import WelcomePage from './pages/WelcomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+
+import WelcomePage from './pages/WelcomePage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
+import GamesPage from './pages/GamesPage.jsx';
+
+import { AuthProvider } from './contexts/AuthContext';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -19,14 +23,20 @@ const router = createBrowserRouter([
    {
       path: '/register',
       element: <RegisterPage/>
+   },
+   {
+      path: '/games',//TODO: Make this handle different users
+      element: <GamesPage/>
    }
 ]);
 
 function App() {
 	return (
-		<RouterProvider router={router}>
-			<QueryClientProvider client={queryClient}></QueryClientProvider>;
-		</RouterProvider>
+		<AuthProvider>
+			<RouterProvider router={router}>
+				<QueryClientProvider client={queryClient}></QueryClientProvider>;
+			</RouterProvider>
+		</AuthProvider>
 	);
 }
 
