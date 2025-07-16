@@ -54,17 +54,6 @@ export default function Game({
 	}
 	return (
 		<>
-			<EditOrAddGameDialog
-				open={dialogOpen}
-				onClose={handleCloseDialog}
-				gameId={id}
-            title={title}
-            genre={genre}
-            platform={platform}
-            releaseDate={releaseDate}
-            description={description}
-            
-			/>
 			<Card
 				variant='outlined'
 				sx={{
@@ -141,6 +130,16 @@ export default function Game({
 					cancelText={'Cancel'}
 				/>
 			</Card>
+			<EditOrAddGameDialog
+				open={dialogOpen}
+				onClose={handleCloseDialog}
+				gameId={id}
+				title={title}
+				genre={genre}
+				platform={platform}
+				releaseDate={releaseDate}
+				description={description}
+			/>
 		</>
 	);
 }

@@ -1,8 +1,10 @@
-import { useParams } from 'react-router-dom';
+import {useState} from 'react';
+import { useParams} from 'react-router-dom';
 import { Box, Grid, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import Game from '../components/Game.jsx';
+import EditOrAddGameDialog from '../components/EditOrAddGameDialog.jsx';
 
 const DUMMY_GAMES = [
 	{
@@ -63,8 +65,17 @@ const DUMMY_GAMES = [
 //TODO: Add delete and edit options
 export default function GamesPage() {
 	const { userId } = useParams();
+   const [dialogOpen, setDialogOpen] = useState(false);
+   
+      function handleAddClick() {
+         setDialogOpen(true);
+      }
+   
+      function handleCloseDialog() {
+         setDialogOpen(false);
+      }
 
-	return (
+	return (<>
 		<Box sx={{ p: 4 }}>
 			<h1>Games for user: {userId}</h1>
 			<Grid
@@ -101,9 +112,17 @@ export default function GamesPage() {
 					width: 80,
 					height: 80,
 				}}
+				onClick={handleAddClick}
 			>
 				<AddIcon />
 			</Fab>
+            
 		</Box>
+      <EditOrAddGameDialog
+                  open={dialogOpen}
+                  onClose={handleCloseDialog}
+                  isEditMode={false}
+               />
+               </>
 	);
 }
