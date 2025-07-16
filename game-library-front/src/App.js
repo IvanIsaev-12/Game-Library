@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       element: <RegisterPage/>
    },
    {
-      path: '/games',//TODO: Make this handle different users
+      path: '/games/:userId',
       element: <GamesPage/>
    }
 ]);

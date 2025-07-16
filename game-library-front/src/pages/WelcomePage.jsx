@@ -13,7 +13,7 @@ export default function WelcomePage() {
 
 	useEffect(() => {
 		if (loggedIn) {
-			navigate('/games');
+			navigate('/games/1'); //TODO:Use actual id
 		}
 	}, [loggedIn, navigate]); 
 
