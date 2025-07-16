@@ -1,21 +1,21 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
-export default function ConfirmationDialog({confirmOpen, cancelDeletion, confirmDeletion, text}){
+export default function ConfirmationDialog({confirmOpen, cancel, confirm, text, title,confirmText,cancelText}){
    return (
 		<Dialog
 			open={confirmOpen}
-			onClose={cancelDeletion}
+			onClose={cancel}
 		>
-			<DialogTitle>Confirm Deletion</DialogTitle>
+			<DialogTitle>{title}</DialogTitle>
 			<DialogContent>
             {text}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={cancelDeletion}>Cancel</Button>
+				<Button onClick={cancel}>{cancelText}</Button>
 				<Button
 					color='error'
-					onClick={confirmDeletion}
+					onClick={confirm}
 				>
-					Delete
+					{confirmText}
 				</Button>
 			</DialogActions>
 		</Dialog>

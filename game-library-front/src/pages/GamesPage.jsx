@@ -84,7 +84,10 @@ export default function GamesPage() {
 							display: 'flex',
 						}}
 					>
-						<Game {...game} />
+						<Game
+							{...game}
+							userId={userId}
+						/>
 					</Grid>
 				))}
 			</Grid>
