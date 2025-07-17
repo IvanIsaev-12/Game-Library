@@ -7,13 +7,16 @@ import {
 	IconButton,
 	Stack,
 } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+
 import ConfirmationDialog from './ConfirmDialog';
 import MoreInfoAccordion from './MoreInfoAccordion';
 import EditOrAddGameDialog from './EditOrAddGameDialog';
+import { updateGame } from '../util/gameActions';
+
 
 export default function Game({
 	id,
@@ -24,10 +27,22 @@ export default function Game({
 	description,
    imageUrl,
 }) {
-	const navigate = useNavigate();
 	const [confirmDialogIsOpen, setConfirmDialogIsOpen] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
+
+   const queryClient = useQueryClient();
+
+	const updateGameMutation = useMutation({
+		mutationFn: updateGame,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['myGames']); // refresh the list
+			handleCloseDialog();
+		},
+		onError: (error) => {
+			console.error('Update failed:', error.message);
+		},
+	});
 
 	function handleEdit(gameId) {
 		setDialogOpen(true);
@@ -139,6 +154,10 @@ export default function Game({
 				platform={platform}
 				releaseDate={releaseDate}
 				description={description}
+				imageUrl={imageUrl}
+				onSubmit={(data) => {
+					updateGameMutation.mutate({ gameId: id, gameData: data });
+				}}
 			/>
 		</>
 	);

@@ -8,39 +8,65 @@ import {
 	Stack,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 
 export default function EditOrAddGameDialog({
 	open,
 	onClose,
+	onSubmit, 
 	gameId,
 	title,
 	genre,
 	platform,
 	releaseDate,
 	description,
+	imageUrl,
 	isEditMode = true,
 }) {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm({
-		defaultValues: isEditMode
-			? {
-					Title: title,
-					Genre: genre,
-					Platform: platform,
-					ReleaseDate: releaseDate,
-					Description: description,
-			  }
-			: {},
+		defaultValues: {
+			title: '',
+			genre: '',
+			platform: '',
+			releaseDate: '',
+			description: '',
+			imageUrl: '',
+		},
 	});
 
-	function onSubmit(data) {
-		console.log(data);
-		// TODO: Perform mutation here
+	// Populate form with initial values on dialog open
+	useEffect(() => {
+		if (open && isEditMode) {
+			reset({
+				title,
+				genre,
+				platform,
+				releaseDate,
+				description,
+				imageUrl,
+			});
+		}
+	}, [
+		open,
+		isEditMode,
+		reset,
+		title,
+		genre,
+		platform,
+		releaseDate,
+		description,
+		imageUrl,
+	]);
+
+	const handleFormSubmit = (data) => {
+		onSubmit?.(data);
 		onClose();
-	}
+	};
 
 	return (
 		<Dialog
@@ -52,63 +78,62 @@ export default function EditOrAddGameDialog({
 			<DialogTitle>
 				{isEditMode ? `Edit Game: ${gameId}` : 'Add New Game'}
 			</DialogTitle>
+
 			<DialogContent dividers>
 				<form
 					id='edit-game-form'
-					onSubmit={handleSubmit(onSubmit)}
+					onSubmit={handleSubmit(handleFormSubmit)}
 					noValidate
 				>
 					<Stack spacing={2}>
 						<TextField
 							label='Title'
-							{...register('Title', { required: 'Title is required' })}
-							error={!!errors.Title}
-							helperText={errors.Title?.message}
-							defaultValue={isEditMode ? title : ''}
+							{...register('title', { required: 'Title is required' })}
+							error={!!errors.title}
+							helperText={errors.title?.message}
 						/>
 						<TextField
 							label='Genre'
-							{...register('Genre', { required: 'Genre is required' })}
-							error={!!errors.Genre}
-							helperText={errors.Genre?.message}
-							defaultValue={isEditMode ? genre : ''}
+							{...register('genre', { required: 'Genre is required' })}
+							error={!!errors.genre}
+							helperText={errors.genre?.message}
 						/>
 						<TextField
 							label='Platform'
-							multiline
-							rows={2}
-							{...register('Platform', {
+							{...register('platform', {
 								required: 'Platform is required',
 							})}
-							error={!!errors.Platform}
-							helperText={errors.Platform?.message}
-							defaultValue={isEditMode ? platform : ''}
+							error={!!errors.platform}
+							helperText={errors.platform?.message}
 						/>
 						<TextField
 							label='Release Date'
 							type='date'
 							InputLabelProps={{ shrink: true }}
-							{...register('ReleaseDate', {
+							{...register('releaseDate', {
 								required: 'Release date is required',
 							})}
-							error={!!errors.ReleaseDate}
-							helperText={errors.ReleaseDate?.message}
-							defaultValue={isEditMode ? releaseDate : ''}
+							error={!!errors.releaseDate}
+							helperText={errors.releaseDate?.message}
 						/>
 						<TextField
 							label='Description'
 							multiline
 							rows={4}
-							{...register('Description', {
+							{...register('description', {
 								required: 'Description is required',
 							})}
-							error={!!errors.Description}
-							helperText={errors.Description?.message}
-							defaultValue={isEditMode ? description : ''}
+							error={!!errors.description}
+							helperText={errors.description?.message}
+						/>
+						<TextField
+							label='Image URL'
+							{...register('imageUrl')}
 						/>
 					</Stack>
 				</form>
 			</DialogContent>
+
 			<DialogActions>
 				<Button
 					onClick={onClose}

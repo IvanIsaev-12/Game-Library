@@ -1,71 +1,19 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { Box, Grid, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Game from '../components/Game.jsx';
 import EditOrAddGameDialog from '../components/EditOrAddGameDialog.jsx';
-import { getMyGames } from '../util/gameActions';
-
-
-const DUMMY_GAMES = [
-	{
-		id: 1,
-		title: 'Rainbow6',
-		genre: 'FPS',
-		platform: 'PC,XBOX,PS',
-		releaseDate: '2016',
-		description: 'Tactical shooter focused on team strategy and destruction.',
-	},
-	{
-		id: 2,
-		title: 'The Witcher 3',
-		genre: 'RPG',
-		platform: 'PC,PS,XBOX,SWITCH',
-		releaseDate: '2015',
-		description:
-			'Open-world fantasy RPG with rich storytelling and deep quests.',
-	},
-	{
-		id: 3,
-		title: 'Minecraft',
-		genre: 'Sandbox',
-		platform: 'PC,XBOX,PS,SWITCH,MOBILE',
-		releaseDate: '2011',
-		description:
-			'Creative sandbox game about building, survival, and exploration.',
-	},
-	{
-		id: 4,
-		title: 'FIFA 24',
-		genre: 'Sports',
-		platform: 'PC,XBOX,PS',
-		releaseDate: '2023',
-		description:
-			'Realistic football simulator with licensed teams and players.',
-	},
-	{
-		id: 5,
-		title: 'Elden Ring',
-		genre: 'Action RPG',
-		platform: 'PC,XBOX,PS',
-		releaseDate: '2022',
-		description:
-			'Challenging open-world action RPG from the creators of Dark Souls.',
-	},
-	{
-		id: 6,
-		title: 'Overwatch 2',
-		genre: 'FPS',
-		platform: 'PC,XBOX,PS,SWITCH',
-		releaseDate: '2022',
-		description: 'Team-based hero shooter with new maps and modes.',
-	},
-];
+import { getMyGames, addGame } from '../util/gameActions';
 
 export default function GamesPage() {
 	const [dialogOpen, setDialogOpen] = useState(false);
-   const name = localStorage.getItem('name');
+	const name = localStorage.getItem('name');
+
+	const queryClient = useQueryClient();
+
+	// Fetch games
 	const {
 		data: games,
 		isLoading,
@@ -74,6 +22,18 @@ export default function GamesPage() {
 	} = useQuery({
 		queryKey: ['myGames'],
 		queryFn: getMyGames,
+	});
+
+	// Mutation for adding a game
+	const addGameMutation = useMutation({
+		mutationFn: addGame,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['myGames']);
+			handleCloseDialog();
+		},
+      onError: (error) => {
+         console.error('Add failed:', error.message);
+      }
 	});
 
 	function handleAddClick() {
@@ -86,6 +46,7 @@ export default function GamesPage() {
 
 	if (isLoading) return <p>Loading your games...</p>;
 	if (isError) return <p>Error: {error.message}</p>;
+
 
 	return (
 		<>
@@ -131,6 +92,7 @@ export default function GamesPage() {
 				open={dialogOpen}
 				onClose={handleCloseDialog}
 				isEditMode={false}
+				onSubmit={(formData) => addGameMutation.mutate(formData)}
 			/>
 		</>
 	);
