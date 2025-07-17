@@ -24,9 +24,17 @@ export const loginUser = async (userData) => {
 
 	if (response.ok) {
 		const token = responseBody.token;
+      const firstName = responseBody.firstName;
+      const lastName = responseBody.lastName;
+
 		if (token) {
 			localStorage.setItem('token', token);
 		}
+      if(firstName && lastName){
+         localStorage.setItem('name', firstName + ' ' + lastName);
+      } else {
+         localStorage.setItem('name', 'Failed to get name');
+      }
 		return responseBody;
 	} else {
 		throw new Error(responseBody.message || 'Login failed');

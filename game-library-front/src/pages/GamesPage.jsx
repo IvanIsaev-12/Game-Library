@@ -65,7 +65,7 @@ const DUMMY_GAMES = [
 
 export default function GamesPage() {
 	const [dialogOpen, setDialogOpen] = useState(false);
-
+   const name = localStorage.getItem('name');
 	const {
 		data: games,
 		isLoading,
@@ -90,7 +90,7 @@ export default function GamesPage() {
 	return (
 		<>
 			<Box sx={{ p: 4 }}>
-				<h1>Here are your games:</h1>
+				<h1>{name} Here are your games:</h1>
 				<Grid
 					container
 					spacing={2}
