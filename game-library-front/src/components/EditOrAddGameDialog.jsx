@@ -181,11 +181,11 @@ export default function EditOrAddGameDialog({
 						</div>
 
 						<TextField
+							InputLabelProps={{ shrink: true }}
 							label='Or paste custom Image URL'
 							{...register('imageUrl')}
 							helperText='Overrides selection if filled.'
 						/>
-
 					</Stack>
 				</form>
 			</DialogContent>

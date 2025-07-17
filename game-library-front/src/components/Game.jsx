@@ -103,7 +103,7 @@ export default function Game({
 
 					<Box
 						component='img'
-						src={imageUrl || '/DummyImages/img.jpg'}
+						src={imageUrl || '/DummyImages/noImage.jpg'}
 						alt='image'
 						sx={{ width: '25rem' }}
 					/>

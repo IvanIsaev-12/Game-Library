@@ -2,18 +2,39 @@ import { useState } from 'react';
 import { Box, Grid, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Masonry } from '@mui/lab';
 
 import Game from '../components/Game.jsx';
 import EditOrAddGameDialog from '../components/EditOrAddGameDialog.jsx';
 import { getMyGames, addGame } from '../query/gameActions.js';
 
+
+//For Testing://////////
+//import { useEffect } from 'react';
+//import { generateAndAddDummyGames, deleteAllDummyGames } from '../test/randomGameDataGenerator.js';
+///////////////////////
+
 export default function GamesPage() {
+
+   //////////////////////////
+   //ForTesting:
+   //useEffect(() => {
+		//deleteAllDummyGames()
+      //generateAndAddDummyGames();
+      // .then(() => {
+		// 	generateAndAddDummyGames();
+		// });
+	//}, []);
+   //////////////////////////
+
+
+
+
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const name = localStorage.getItem('name');
 
 	const queryClient = useQueryClient();
 
-	// Fetch games
 	const {
 		data: games,
 		isLoading,
@@ -24,16 +45,15 @@ export default function GamesPage() {
 		queryFn: getMyGames,
 	});
 
-	// Mutation for adding a game
 	const addGameMutation = useMutation({
 		mutationFn: addGame,
 		onSuccess: () => {
 			queryClient.invalidateQueries(['myGames']);
 			handleCloseDialog();
 		},
-      onError: (error) => {
-         console.error('Add failed:', error.message);
-      }
+		onError: (error) => {
+			console.error('Add failed:', error.message);
+		},
 	});
 
 	function handleAddClick() {
@@ -47,30 +67,25 @@ export default function GamesPage() {
 	if (isLoading) return <p>Loading your games...</p>;
 	if (isError) return <p>Error: {error.message}</p>;
 
-
 	return (
 		<>
 			<Box sx={{ p: 4 }}>
 				<h1>{name} Here are your games:</h1>
-				<Grid
-					container
+
+            {(!games || games.length === 0) && <p>No games found. Try adding some with the + button</p> }
+				<Masonry
+					columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
 					spacing={2}
-					alignItems='stretch'
 				>
 					{games.map((game) => (
-						<Grid
-							item
+						<Game
 							key={game.id}
-							xs={12}
-							sm={6}
-							md={4}
-							lg={3}
-							sx={{ display: 'flex' }}
-						>
-							<Game {...game} />
-						</Grid>
+							{...game}
+						/>
 					))}
-				</Grid>
+				</Masonry>
+
+				
 
 				<Fab
 					color='primary'

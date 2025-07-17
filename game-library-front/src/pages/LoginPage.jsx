@@ -23,7 +23,7 @@ export default function LoginPage() {
 			navigate('/');
 		},
 		onError: (error) => {
-			alert(error.message); 
+			alert('Could not log you in'); 
 		},
 	});
 
