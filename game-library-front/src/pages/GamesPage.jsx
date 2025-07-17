@@ -8,28 +8,7 @@ import Game from '../components/Game.jsx';
 import EditOrAddGameDialog from '../components/EditOrAddGameDialog.jsx';
 import { getMyGames, addGame } from '../query/gameActions.js';
 
-
-//For Testing://////////
-//import { useEffect } from 'react';
-//import { generateAndAddDummyGames, deleteAllDummyGames } from '../test/randomGameDataGenerator.js';
-///////////////////////
-
 export default function GamesPage() {
-
-   //////////////////////////
-   //ForTesting:
-   //useEffect(() => {
-		//deleteAllDummyGames()
-      //generateAndAddDummyGames();
-      // .then(() => {
-		// 	generateAndAddDummyGames();
-		// });
-	//}, []);
-   //////////////////////////
-
-
-
-
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const name = localStorage.getItem('name');
 

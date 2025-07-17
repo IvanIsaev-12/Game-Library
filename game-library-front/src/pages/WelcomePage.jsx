@@ -1,7 +1,8 @@
 import { Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { useEffect } from 'react';
+
+import { useAuth } from '../contexts/AuthContext';
 import MainLogo from '../components/logos/MainLogo';
 import CenteringBox from '../components/CenteringBox';
 

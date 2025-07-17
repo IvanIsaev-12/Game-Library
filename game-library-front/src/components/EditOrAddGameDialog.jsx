@@ -125,14 +125,6 @@ export default function EditOrAddGameDialog({
 							error={!!errors.genre}
 							helperText={errors.genre?.message}
 						/>
-						{/* <TextField
-							label='Platform'
-							{...register('platform', {
-								required: 'Platform is required',
-							})}
-							error={!!errors.platform}
-							helperText={errors.platform?.message}
-						/> */}
 
 						<PlatformMultiSelect
 							name='platform'
