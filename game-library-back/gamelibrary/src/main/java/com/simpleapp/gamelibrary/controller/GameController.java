@@ -22,6 +22,7 @@ public class GameController {
     private final UserService userService;
 
     @GetMapping("/my-library")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<Game>> getAllGames() {
         User currentUser = userService.getCurrentUser();
         List<Game> games = gameService.getAllGames(currentUser);
