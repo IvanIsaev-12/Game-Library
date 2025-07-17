@@ -6,14 +6,30 @@ import {
 	TextField,
 	Button,
 	Stack,
+	Typography,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
+const predefinedImages = [
+	'/DummyImages/img.jpg',
+	'DummyImages/csgo.jpg',
+	'DummyImages/terraria.jpg',
+	'DummyImages/mc.jpg',
+	'DummyImages/ac.jpg',
+	'DummyImages/repo.jpg',
+	'DummyImages/tabletop.jpg',
+	'DummyImages/dirt.jpg',
+	'DummyImages/satisfactory.jpg',
+	'DummyImages/dota.jpg',
+	'DummyImages/lol.jpg',
+	'DummyImages/gta.jpg',
+];
+
 export default function EditOrAddGameDialog({
 	open,
 	onClose,
-	onSubmit, 
+	onSubmit,
 	gameId,
 	title,
 	genre,
@@ -27,6 +43,8 @@ export default function EditOrAddGameDialog({
 		register,
 		handleSubmit,
 		reset,
+		setValue,
+		watch,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -39,16 +57,17 @@ export default function EditOrAddGameDialog({
 		},
 	});
 
-	// Populate form with initial values on dialog open
+	const selectedImage = watch('imageUrl');
+
 	useEffect(() => {
-		if (open && isEditMode) {
+		if (open) {
 			reset({
-				title,
-				genre,
-				platform,
-				releaseDate,
-				description,
-				imageUrl,
+				title: title || '',
+				genre: genre || '',
+				platform: platform || '',
+				releaseDate: releaseDate || '',
+				description: description || '',
+				imageUrl: imageUrl || '',
 			});
 		}
 	}, [
@@ -66,6 +85,10 @@ export default function EditOrAddGameDialog({
 	const handleFormSubmit = (data) => {
 		onSubmit?.(data);
 		onClose();
+	};
+
+	const handleImageSelect = (url) => {
+		setValue('imageUrl', url, { shouldValidate: true });
 	};
 
 	return (
@@ -126,10 +149,43 @@ export default function EditOrAddGameDialog({
 							error={!!errors.description}
 							helperText={errors.description?.message}
 						/>
+
+						<Typography variant='subtitle1'>Choose an Image</Typography>
+						<div
+							style={{
+								display: 'grid',
+								gridTemplateColumns:
+									'repeat(auto-fill, minmax(120px, 1fr))',
+								gap: '12px',
+							}}
+						>
+							{predefinedImages.map((url) => (
+								<img
+									key={url}
+									src={url}
+									alt='preview'
+									onClick={() => handleImageSelect(url)}
+									style={{
+										cursor: 'pointer',
+										border:
+											selectedImage === url
+												? '3px solid #1976d2'
+												: '2px solid #ccc',
+										borderRadius: '6px',
+										width: '100%',
+										height: 100,
+										objectFit: 'cover',
+									}}
+								/>
+							))}
+						</div>
+
 						<TextField
-							label='Image URL'
+							label='Or paste custom Image URL'
 							{...register('imageUrl')}
+							helperText='Overrides selection if filled.'
 						/>
+
 					</Stack>
 				</form>
 			</DialogContent>
