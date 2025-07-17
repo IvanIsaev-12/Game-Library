@@ -17,7 +17,6 @@ import MoreInfoAccordion from './MoreInfoAccordion';
 import EditOrAddGameDialog from './EditOrAddGameDialog';
 import { updateGame, deleteGame } from '../query/gameActions';
 
-
 export default function Game({
 	id,
 	title,
@@ -25,18 +24,18 @@ export default function Game({
 	platform,
 	releaseDate,
 	description,
-   imageUrl,
+	imageUrl,
 }) {
 	const [confirmDialogIsOpen, setConfirmDialogIsOpen] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-   const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
 	const updateGameMutation = useMutation({
 		mutationFn: updateGame,
 		onSuccess: () => {
-			queryClient.invalidateQueries(['myGames']); 
+			queryClient.invalidateQueries(['myGames']);
 			handleCloseDialog();
 		},
 		onError: (error) => {
@@ -44,11 +43,10 @@ export default function Game({
 		},
 	});
 
-
 	const deleteGameMutation = useMutation({
 		mutationFn: deleteGame,
 		onSuccess: () => {
-			queryClient.invalidateQueries(['myGames']); 
+			queryClient.invalidateQueries(['myGames']);
 			setItemToDelete(null);
 			setConfirmDialogIsOpen(false);
 		},
@@ -56,7 +54,6 @@ export default function Game({
 			console.error('Delete failed:', error.message);
 		},
 	});
-
 
 	function handleEdit(gameId) {
 		setDialogOpen(true);
@@ -76,7 +73,6 @@ export default function Game({
 			deleteGameMutation.mutate(itemToDelete);
 		}
 	}
-   
 
 	function cancelDeletion() {
 		setConfirmDialogIsOpen(false);
@@ -89,50 +85,21 @@ export default function Game({
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
-					width: '25rem',
+					maxWidth: 600,
 				}}
 			>
 				<CardContent sx={{ flexGrow: 1 }}>
-					<Typography
-						variant='h5'
-						component='div'
-						gutterBottom
+					<Stack
+						direction={'row'}
+						justifyContent={'space-between'}
 					>
-						{title}
-					</Typography>
-
-					<Box
-						component='img'
-						src={imageUrl || '/DummyImages/noImage.jpg'}
-						alt='image'
-						sx={{ width: '25rem' }}
-					/>
-
-					<Divider sx={{ my: 2 }} />
-
-					<Box
-						display='flex'
-						justifyContent='space-between'
-						alignItems='center'
-					>
-						<MoreInfoAccordion>
-							<Typography color='text.secondary'>
-								Genre: {genre}
-							</Typography>
-							<Typography color='text.secondary'>
-								Platform: {platform}
-							</Typography>
-							<Typography color='text.secondary'>
-								Released: {releaseDate}
-							</Typography>
-							<Typography
-								variant='body2'
-								mt={1}
-							>
-								{description}
-							</Typography>
-						</MoreInfoAccordion>
-
+						<Typography
+							variant='h5'
+							component='div'
+							gutterBottom
+						>
+							{title}
+						</Typography>
 						<Stack direction={'row'}>
 							<IconButton
 								color='primary'
@@ -147,7 +114,36 @@ export default function Game({
 								<DeleteIcon />
 							</IconButton>
 						</Stack>
-					</Box>
+					</Stack>
+
+					<Box
+						component='img'
+						src={imageUrl || '/DummyImages/noImage.jpg'}
+						alt='image'
+						sx={{
+							width: '100%',
+							objectFit: 'cover',
+							borderRadius: 1,
+						}}
+					/>
+
+					<Divider sx={{ my: 2 }} />
+
+					<MoreInfoAccordion>
+						<Typography color='text.secondary'>Genre: {genre}</Typography>
+						<Typography color='text.secondary'>
+							Platform: {platform}
+						</Typography>
+						<Typography color='text.secondary'>
+							Released: {releaseDate}
+						</Typography>
+						<Typography
+							variant='body2'
+							mt={1}
+						>
+							{description}
+						</Typography>
+					</MoreInfoAccordion>
 				</CardContent>
 
 				<ConfirmationDialog
