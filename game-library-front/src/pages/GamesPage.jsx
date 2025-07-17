@@ -70,7 +70,7 @@ export default function GamesPage() {
 	return (
 		<>
 			<Box sx={{ p: 4 }}>
-				<h1>{name} Here are your games:</h1>
+				<h1>{name}, Here are your games:</h1>
 
             {(!games || games.length === 0) && <p>No games found. Try adding some with the + button</p> }
 				<Masonry
