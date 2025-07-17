@@ -11,6 +11,8 @@ import {
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
+import PlatformMultiSelect from './PlatformMultiSelect';
+
 const predefinedImages = [
 	'/DummyImages/img.jpg',
 	'DummyImages/csgo.jpg',
@@ -25,6 +27,8 @@ const predefinedImages = [
 	'DummyImages/lol.jpg',
 	'DummyImages/gta.jpg',
 ];
+
+const allPlatforms = ['PC', 'PS5','PS4','Xbox One', 'Xbox Series S/X', 'Switch','Switch2', 'Mobile'];
 
 export default function EditOrAddGameDialog({
 	open,
@@ -121,14 +125,26 @@ export default function EditOrAddGameDialog({
 							error={!!errors.genre}
 							helperText={errors.genre?.message}
 						/>
-						<TextField
+						{/* <TextField
 							label='Platform'
 							{...register('platform', {
 								required: 'Platform is required',
 							})}
 							error={!!errors.platform}
 							helperText={errors.platform?.message}
+						/> */}
+
+						<PlatformMultiSelect
+							name='platform'
+							label='Platform'
+							options={allPlatforms}
+							value={watch('platform')}
+							onChange={(val) =>
+								setValue('platform', val, { shouldValidate: true })
+							}
+							error={errors.platform?.message}
 						/>
+
 						<TextField
 							label='Release Date'
 							type='date'

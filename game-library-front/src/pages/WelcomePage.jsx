@@ -1,7 +1,9 @@
-import { Button, Stack, Box } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; 
+import { useAuth } from '../contexts/AuthContext';
 import { useEffect } from 'react';
+import MainLogo from '../components/logos/MainLogo';
+import CenteringBox from '../components/CenteringBox';
 
 export default function WelcomePage() {
 	const navigate = useNavigate();
@@ -14,20 +16,16 @@ export default function WelcomePage() {
 		if (loggedIn) {
 			navigate('/my-games');
 		}
-	}, [loggedIn, navigate]); 
+	}, [loggedIn, navigate]);
 
 	return (
-		<Box
-			height='100vh'
-			display='flex'
-			justifyContent='center'
-			alignItems='center'
-		>
+		<CenteringBox scale={1.3}>
 			<Stack
 				spacing={2}
 				alignItems='center'
 				justifyContent={'center'}
 			>
+				<MainLogo size='250px' />
 				<h1>Welcome to Game Library</h1>
 				<Button
 					onClick={loginButtonHandler}
@@ -36,6 +34,6 @@ export default function WelcomePage() {
 					Login
 				</Button>
 			</Stack>
-		</Box>
+		</CenteringBox>
 	);
 }

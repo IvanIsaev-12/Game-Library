@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import MainLogo from './logos/MainLogo';
 
 
 export default function LoginAppBar() {
@@ -29,7 +30,8 @@ export default function LoginAppBar() {
 
 	return (
 		<AppBar position='static'>
-			<Toolbar sx={{ justifyContent: 'flex-end' }}>
+			<Toolbar sx={{ justifyContent: 'space-between' }}>
+            <MainLogo/>
 				<Button
 					onClick={handleClick}
 					color='secondary'
