@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { registerUser } from '../util/register-login';
+import { registerUser } from '../query/register-login';
 import { useNavigate } from 'react-router-dom';
 import {
 	Stack,

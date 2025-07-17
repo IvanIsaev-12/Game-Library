@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
-import { loginUser } from '../util/register-login';
+import { loginUser } from '../query/register-login';
 import { useAuth } from '../contexts/AuthContext';
 import CenteringBox from '../components/CenteringBox';
 

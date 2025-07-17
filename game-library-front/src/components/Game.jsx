@@ -15,7 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ConfirmationDialog from './ConfirmDialog';
 import MoreInfoAccordion from './MoreInfoAccordion';
 import EditOrAddGameDialog from './EditOrAddGameDialog';
-import { updateGame } from '../util/gameActions';
+import { updateGame } from '../query/gameActions';
 
 
 export default function Game({

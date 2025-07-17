@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Game from '../components/Game.jsx';
 import EditOrAddGameDialog from '../components/EditOrAddGameDialog.jsx';
-import { getMyGames, addGame } from '../util/gameActions';
+import { getMyGames, addGame } from '../query/gameActions.js';
 
 export default function GamesPage() {
 	const [dialogOpen, setDialogOpen] = useState(false);
