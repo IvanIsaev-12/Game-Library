@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { registerUser } from '../util/http';
+import { registerUser } from '../util/register-login';
+import { useNavigate } from 'react-router-dom';
 import {
 	Stack,
 	TextField,
@@ -15,6 +16,8 @@ import { Link } from 'react-router-dom';
 import CenteringBox from '../components/CenteringBox';
 
 export default function RegisterPage() {
+   const navigate = useNavigate();
+
 	const {
 		register,
 		handleSubmit,
@@ -25,7 +28,7 @@ export default function RegisterPage() {
 	const mutation = useMutation({
 		mutationFn: registerUser,
 		onSuccess: () => {
-			alert('Registration successful! You can now log in.');
+         navigate('/login');
 		},
 		onError: (error) => {
 			alert('Registration failed: ' + error.message);

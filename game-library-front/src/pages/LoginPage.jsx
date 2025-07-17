@@ -1,29 +1,35 @@
 import { Box, TextField, Button, Stack, Divider } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
-import {useAuth} from '../contexts/AuthContext';
+import { loginUser } from '../util/register-login';
+import { useAuth } from '../contexts/AuthContext';
 import CenteringBox from '../components/CenteringBox';
 
-
-
-//TODO: add http actions
 export default function LoginPage() {
-   const navigate = useNavigate();
-   const {setLoggedIn} = useAuth();
+	const navigate = useNavigate();
+	const { setLoggedIn } = useAuth();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
 
-	function onSubmit(data) {
-		console.log(data);
+	const mutation = useMutation({
+		mutationFn: loginUser,
+		onSuccess: (data) => {
+			setLoggedIn(true);
+			navigate('/');
+		},
+		onError: (error) => {
+			alert(error.message); 
+		},
+	});
 
-
-      setLoggedIn(true);
-      navigate('/');
-	}
+	const onSubmit = (data) => {
+		mutation.mutate(data);
+	};
 
 	return (
 		<CenteringBox>
@@ -37,7 +43,8 @@ export default function LoginPage() {
 					spacing={2}
 				>
 					<h1>Login to your account</h1>
-					<Divider></Divider>
+					<Divider />
+
 					<TextField
 						label='Email'
 						type='email'
@@ -59,13 +66,16 @@ export default function LoginPage() {
 						error={!!errors.password}
 						helperText={errors.password?.message}
 					/>
+
 					<Button
 						type='submit'
 						variant='contained'
 						color='primary'
+						disabled={mutation.isPending}
 					>
-						Login
+						{mutation.isPending ? 'Logging in...' : 'Login'}
 					</Button>
+
 					<Box
 						display='flex'
 						justifyContent='space-between'
