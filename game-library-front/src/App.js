@@ -1,25 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
 
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import WelcomePage from './pages/WelcomePage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
+import GamesPage from './pages/GamesPage.jsx';
+
+import Layout from './layouts/Layout.jsx';
+import { AuthProvider } from './contexts/AuthContext';
+
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <Layout />,
+		children: [
+			{
+				index: true,
+				element: <WelcomePage />,
+			},
+			{
+				path: 'login',
+				element: <LoginPage />,
+			},
+			{
+				path: 'register',
+				element: <RegisterPage />,
+			},
+			{
+				path: 'my-games',
+				element: <GamesPage />,
+			},
+		],
+	},
+]);
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<AuthProvider>
+			<QueryClientProvider client={queryClient}>
+				<RouterProvider router={router} />
+			</QueryClientProvider>
+		</AuthProvider>
+	);
 }
 
 export default App;
