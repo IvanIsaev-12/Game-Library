@@ -7,7 +7,7 @@ export default function Layout() {
 	return (
 		<>
 			<LoginAppBar />
-			<Box sx={{ mt: 8, px: 2 }}>
+			<Box >
 				<Outlet />
 			</Box>
 		</>
