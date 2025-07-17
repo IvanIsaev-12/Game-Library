@@ -15,7 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ConfirmationDialog from './ConfirmDialog';
 import MoreInfoAccordion from './MoreInfoAccordion';
 import EditOrAddGameDialog from './EditOrAddGameDialog';
-import { updateGame } from '../query/gameActions';
+import { updateGame, deleteGame } from '../query/gameActions';
 
 
 export default function Game({
@@ -36,13 +36,27 @@ export default function Game({
 	const updateGameMutation = useMutation({
 		mutationFn: updateGame,
 		onSuccess: () => {
-			queryClient.invalidateQueries(['myGames']); // refresh the list
+			queryClient.invalidateQueries(['myGames']); 
 			handleCloseDialog();
 		},
 		onError: (error) => {
 			console.error('Update failed:', error.message);
 		},
 	});
+
+
+	const deleteGameMutation = useMutation({
+		mutationFn: deleteGame,
+		onSuccess: () => {
+			queryClient.invalidateQueries(['myGames']); 
+			setItemToDelete(null);
+			setConfirmDialogIsOpen(false);
+		},
+		onError: (error) => {
+			console.error('Delete failed:', error.message);
+		},
+	});
+
 
 	function handleEdit(gameId) {
 		setDialogOpen(true);
@@ -58,10 +72,11 @@ export default function Game({
 	}
 
 	function confirmDeletion() {
-		//TODO: DELETE the item
-		console.log('Deleting item with ID:', itemToDelete);
-		setConfirmDialogIsOpen(false);
+		if (itemToDelete) {
+			deleteGameMutation.mutate(itemToDelete);
+		}
 	}
+   
 
 	function cancelDeletion() {
 		setConfirmDialogIsOpen(false);

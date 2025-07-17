@@ -1,4 +1,3 @@
-// src/App.jsx
 import './App.css';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';

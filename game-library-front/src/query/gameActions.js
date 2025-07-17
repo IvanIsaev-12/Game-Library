@@ -86,3 +86,24 @@ export const addGame = async (gameData) => {
 
 	return responseBody;
 };
+
+export const deleteGame = async (gameId) => {
+	const token = localStorage.getItem('token');
+
+	const response = await fetch(
+		`http://localhost:8080/api/games/my-library/${gameId}`,
+		{
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	);
+
+	if (!response.ok) {
+		const responseBody = await response.json();
+		throw new Error(responseBody.message || 'Failed to delete game');
+	}
+
+	return true; // success indicator
+};
