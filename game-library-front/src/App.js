@@ -28,7 +28,7 @@ const router = createBrowserRouter([
 		element: <RegisterPage />,
 	},
 	{
-		path: '/games/:userId',
+		path: '/my-games',
 		element: <GamesPage />,
 	},
 ]);

@@ -5,7 +5,7 @@ const AuthContext = createContext();
 export function AuthProvider({children}){
    const [loggedIn, setLoggedIn] = useState(false);
    const value = useMemo(() => {
-	  const user = {};
+	  let user = {};
 	  return { loggedIn, setLoggedIn, user };
    }, [loggedIn]);
 

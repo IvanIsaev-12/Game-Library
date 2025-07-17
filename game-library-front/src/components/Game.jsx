@@ -16,13 +16,13 @@ import MoreInfoAccordion from './MoreInfoAccordion';
 import EditOrAddGameDialog from './EditOrAddGameDialog';
 
 export default function Game({
-	userId,
 	id,
 	title,
 	genre,
 	platform,
 	releaseDate,
 	description,
+   imageUrl,
 }) {
 	const navigate = useNavigate();
 	const [confirmDialogIsOpen, setConfirmDialogIsOpen] = useState(false);
@@ -73,7 +73,7 @@ export default function Game({
 
 					<Box
 						component='img'
-						src='/DummyImages/img.jpg'
+						src={imageUrl || '/DummyImages/img.jpg'}
 						alt='image'
 						sx={{ width: '25rem' }}
 					/>

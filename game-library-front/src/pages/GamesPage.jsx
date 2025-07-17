@@ -1,10 +1,12 @@
 import {useState} from 'react';
-import { useParams} from 'react-router-dom';
 import { Box, Grid, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useQuery } from '@tanstack/react-query';
 
 import Game from '../components/Game.jsx';
 import EditOrAddGameDialog from '../components/EditOrAddGameDialog.jsx';
+import { getMyGames } from '../util/gameActions';
+
 
 const DUMMY_GAMES = [
 	{
@@ -61,68 +63,75 @@ const DUMMY_GAMES = [
 	},
 ];
 
-//TODO: Fetch based on userID and use that data
-//TODO: Add delete and edit options
 export default function GamesPage() {
-	const { userId } = useParams();
-   const [dialogOpen, setDialogOpen] = useState(false);
-   
-      function handleAddClick() {
-         setDialogOpen(true);
-      }
-   
-      function handleCloseDialog() {
-         setDialogOpen(false);
-      }
+	const [dialogOpen, setDialogOpen] = useState(false);
 
-	return (<>
-		<Box sx={{ p: 4 }}>
-			<h1>Games for user: {userId}</h1>
-			<Grid
-				container
-				spacing={2}
-				alignItems='stretch'
-			>
-				{DUMMY_GAMES.map((game) => (
-					<Grid
-						item
-						key={game.id}
-						xs={12}
-						sm={6}
-						md={4}
-						lg={3}
-						sx={{
-							display: 'flex',
-						}}
-					>
-						<Game
-							{...game}
-							userId={userId}
-						/>
-					</Grid>
-				))}
-			</Grid>
-			<Fab
-				color='primary'
-				aria-label='add'
-				sx={{
-					position: 'fixed',
-					bottom: 16,
-					right: 16,
-					width: 80,
-					height: 80,
-				}}
-				onClick={handleAddClick}
-			>
-				<AddIcon />
-			</Fab>
-            
-		</Box>
-      <EditOrAddGameDialog
-                  open={dialogOpen}
-                  onClose={handleCloseDialog}
-                  isEditMode={false}
-               />
-               </>
+	const {
+		data: games,
+		isLoading,
+		isError,
+		error,
+	} = useQuery({
+		queryKey: ['myGames'],
+		queryFn: getMyGames,
+	});
+
+	function handleAddClick() {
+		setDialogOpen(true);
+	}
+
+	function handleCloseDialog() {
+		setDialogOpen(false);
+	}
+
+	if (isLoading) return <p>Loading your games...</p>;
+	if (isError) return <p>Error: {error.message}</p>;
+
+	return (
+		<>
+			<Box sx={{ p: 4 }}>
+				<h1>Here are your games:</h1>
+				<Grid
+					container
+					spacing={2}
+					alignItems='stretch'
+				>
+					{games.map((game) => (
+						<Grid
+							item
+							key={game.id}
+							xs={12}
+							sm={6}
+							md={4}
+							lg={3}
+							sx={{ display: 'flex' }}
+						>
+							<Game {...game} />
+						</Grid>
+					))}
+				</Grid>
+
+				<Fab
+					color='primary'
+					aria-label='add'
+					sx={{
+						position: 'fixed',
+						bottom: 16,
+						right: 16,
+						width: 80,
+						height: 80,
+					}}
+					onClick={handleAddClick}
+				>
+					<AddIcon />
+				</Fab>
+			</Box>
+
+			<EditOrAddGameDialog
+				open={dialogOpen}
+				onClose={handleCloseDialog}
+				isEditMode={false}
+			/>
+		</>
 	);
 }

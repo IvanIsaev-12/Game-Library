@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext'; 
 import { useEffect } from 'react';
 
-//TODO: add http actions
 export default function WelcomePage() {
 	const navigate = useNavigate();
 	const { loggedIn } = useAuth();
@@ -13,7 +12,7 @@ export default function WelcomePage() {
 
 	useEffect(() => {
 		if (loggedIn) {
-			navigate('/games/1'); //TODO:Use actual id
+			navigate('/my-games');
 		}
 	}, [loggedIn, navigate]); 
 
