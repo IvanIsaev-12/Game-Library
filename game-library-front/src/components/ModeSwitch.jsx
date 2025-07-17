@@ -1,7 +1,6 @@
-// components/ModeSwitch.jsx
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-import { useTheme as useSystemTheme } from '@mui/material/styles';
+
 import { useTheme } from '../contexts/ThemeContext';
 
 const CustomSwitch = styled(Switch)(({ theme }) => ({

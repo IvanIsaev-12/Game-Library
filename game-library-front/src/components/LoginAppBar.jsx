@@ -1,8 +1,8 @@
-// LoginAppBar.jsx
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
-import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+
+import { useAuth } from '../contexts/AuthContext';
 import { ModeSwitch } from './ModeSwitch';
 import MainLogo from './logos/MainLogo';
 

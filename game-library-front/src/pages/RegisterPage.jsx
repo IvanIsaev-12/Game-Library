@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../query/register-login';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
 	Stack,
 	TextField,
@@ -12,7 +12,7 @@ import {
 	Box,
 	Divider,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+
 import CenteringBox from '../components/CenteringBox';
 
 export default function RegisterPage() {
