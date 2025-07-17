@@ -89,7 +89,8 @@ export default function Game({
 				sx={{
 					display: 'flex',
 					flexDirection: 'column',
-					width: '25rem',
+					maxWidth: 600,
+					//width: '25rem',
 				}}
 			>
 				<CardContent sx={{ flexGrow: 1 }}>
@@ -105,7 +106,11 @@ export default function Game({
 						component='img'
 						src={imageUrl || '/DummyImages/noImage.jpg'}
 						alt='image'
-						sx={{ width: '25rem' }}
+						sx={{
+							width: '100%',
+							objectFit: 'cover',
+							borderRadius: 1,
+						}}
 					/>
 
 					<Divider sx={{ my: 2 }} />

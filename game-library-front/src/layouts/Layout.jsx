@@ -7,7 +7,7 @@ export default function Layout() {
 	return (
 		<>
 			<LoginAppBar />
-			<Box >
+			<Box sx={{padding: '2rem'}} >
 				<Outlet />
 			</Box>
 		</>
