@@ -1,7 +1,6 @@
 package com.simpleapp.gamelibrary.config;
 
 import com.simpleapp.gamelibrary.repository.UserRepository;
-import com.simpleapp.gamelibrary.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,6 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepo) {
         return email -> userRepo.findByEmail(email)
-                .map(user -> new UserDetailsImpl(user))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
     @Bean
