@@ -81,6 +81,11 @@ spring.datasource.username=your_username
 spring.datasource.password=your_password
 jwt.secret=your_jwt_secret
 
+Frontend libraries used:
+Material UI: https://mui.com/ (UI elements, Lab elements, Icons)
+Tanstack query: https://tanstack.com/query/latest
+React router, hook form
+
 📮 API Endpoints
 Auth
 POST /api/auth/register – Register new user
