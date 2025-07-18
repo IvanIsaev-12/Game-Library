@@ -1,13 +1,15 @@
-import { Box, TextField, Button, Stack, Divider } from '@mui/material';
+import { Box, TextField, Button, Stack, Divider, Alert } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import { loginUser } from '../query/register-login';
 import { useAuth } from '../contexts/AuthContext';
 import CenteringBox from '../components/CenteringBox';
 
 export default function LoginPage() {
+	const [isAlert, setIsAlert] = useState(false);
 	const navigate = useNavigate();
 	const { setLoggedIn } = useAuth();
 	const {
@@ -23,11 +25,12 @@ export default function LoginPage() {
 			navigate('/');
 		},
 		onError: (error) => {
-			alert('Could not log you in'); 
+			setIsAlert(true);
 		},
 	});
 
 	const onSubmit = (data) => {
+      setIsAlert(false)
 		mutation.mutate(data);
 	};
 
@@ -42,6 +45,14 @@ export default function LoginPage() {
 					direction='column'
 					spacing={2}
 				>
+					{isAlert && (
+						<Alert
+							severity='error'
+							onClose={() => setIsAlert(false)}
+						>
+							Could not log you in.
+						</Alert>
+					)}
 					<h1>Login to your account</h1>
 					<Divider />
 
