@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { registerUser } from '../query/register-login';
 import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
 import {
 	Stack,
 	TextField,
@@ -11,13 +12,14 @@ import {
 	Typography,
 	Box,
 	Divider,
+	Alert,
 } from '@mui/material';
 
 import CenteringBox from '../components/CenteringBox';
 
 export default function RegisterPage() {
-   const navigate = useNavigate();
-
+	const navigate = useNavigate();
+	const [isAlert, setIsAlert] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -28,16 +30,17 @@ export default function RegisterPage() {
 	const mutation = useMutation({
 		mutationFn: registerUser,
 		onSuccess: () => {
-         navigate('/login');
+			navigate('/login');
 		},
 		onError: (error) => {
-			alert('Registration failed: ' + error.message);
+			setIsAlert(true);
 		},
 	});
 
 	const onSubmit = (data) => {
+		setIsAlert(false);
 		if (data.password !== data.confirmPassword) {
-			alert('Passwords do not match');
+         setIsAlert(true);
 			return;
 		}
 		mutation.mutate({
@@ -59,6 +62,24 @@ export default function RegisterPage() {
 					direction='column'
 					spacing={2}
 				>
+					<p style={{ visibility: 'hidden' }}>{/*fixes error message stretching the component */}
+						<Alert
+							severity='error'
+							onClose={() => setIsAlert(false)}
+						>
+							Could not register you check your credentials or try a
+							different email.
+						</Alert>
+					</p>
+					{isAlert && (
+						<Alert
+							severity='error'
+							onClose={() => setIsAlert(false)}
+						>
+							Could not register you check your credentials or try a
+							different email.
+						</Alert>
+					)}
 					<h1>Register</h1>
 					<Divider />
 					<TextField
